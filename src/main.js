@@ -18,10 +18,12 @@ Vue.use(ElementUI)
 import Pagination from '@/components/CPagination/index'
 import CTable from '@/components/CTable/index'
 import CQueryForm from '@/components/CQueryForm/index'
+import Module from '@/components/CModule'
 
 Vue.component('Pagination', Pagination)
 Vue.component('c-table', CTable)
 Vue.component('c-query-form', CQueryForm)
+Vue.component(Module.name, Module)
 
 new Vue({
     router,
