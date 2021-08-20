@@ -9,6 +9,7 @@
           :loading="loading"
           @search="search"
           @reset="queryReset"
+          @add="goBack"
         />
       </div>
       <div>
@@ -128,7 +129,7 @@ export default {
                 },
                 {
                     type: 'info',
-                    text: '添加',
+                    text: '返回',
                     size: 'small',
                     clickName: 'add'
                 }
@@ -162,6 +163,7 @@ export default {
                     type: 'date',
                     key: ['startTime', 'endTime'],
                     label: '反馈起止日期',
+                    valueFormat: 'yyyy-MM-dd HH:mm:ss',
                     holder: ['开始日期', '结束日期']
                 }
             ],
@@ -235,11 +237,18 @@ export default {
     methods: {
         // 初始化
         getList() {},
+        goBack() {
+            this.$router.push({ path: '/' })
+        },
         // 搜素
         search() {},
         // 搜索表单重置
         queryReset() {
             // this.form={}
+
+        },
+        // 反馈详情
+        handleChec() {
 
         },
         // 分页点击回调

@@ -39,6 +39,7 @@
             :disabled="item.disabled"
             :clearable="item.clearable"
             :placeholder="item.holder[0]"
+            :value-format="item.valueFormat|| ''"
           />
           <span> - </span>
           <el-date-picker
@@ -48,6 +49,7 @@
             :disabled="item.disabled"
             :clearable="item.clearable"
             :placeholder="item.holder[1]"
+            :value-format="item.valueFormat|| ''"
           />
         </div>
 
