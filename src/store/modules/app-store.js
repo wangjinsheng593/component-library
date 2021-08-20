@@ -28,6 +28,9 @@ const actions = {
     },
     /**
    * 弹窗信息
+   * 用法：
+   *  清空用户数据：store.dispatch('appStore/setUserData', {});
+   * 登录返回的数据： store.dispatch('appStore/setUserData', res);
    *
    * @param {Function} commit commit
    */
