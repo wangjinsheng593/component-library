@@ -10,6 +10,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.config.productionTip = false
 
+// websocket
+import websocket from '@/utils/websocket'
+Vue.prototype.$websocket = websocket
+
 // set ElementUI lang to EN
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
