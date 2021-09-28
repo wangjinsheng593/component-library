@@ -27,6 +27,20 @@ export default {
         })
     },
     methods: {
+
+        // 导出数据   import { loanDownloadData } from '@/api/loan/userLoanList'
+        handleExport(formData) {
+            this.submitList[2].loading = true
+            const data = {
+                event: '', // event: loanDownloadData,
+                formData: formData
+            }
+            this.$store.dispatch('downloadData', data).then(res => {
+                this.submitList[2].loading = false
+            }).catch(() => {
+                this.submitList[2].loading = false
+            })
+        },
         // 设置弹窗开关
         handleModuleData(value) {
             this.setModuleData({

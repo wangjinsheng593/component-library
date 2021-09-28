@@ -3,19 +3,30 @@
     <!--region 表格-->
     <el-table
       id="CTable"
-      ref="CTable"
+      ref="selectionTable"
       v-loading="loading"
       empty-text="暂无数据"
-      :height="height!=''?height:tableHeight"
+      :height="height"
       :data="dataList"
       :stripe="options.stripe"
       :header-cell-style="{background:'#f2f2f2',color:'#909399'}"
       align="center"
       :row-style="tableRowStyle"
+      :highlight-current-row="options.highlightCurrentRow"
+      @row-click="rowClick"
       @selection-change="handleSelectionChange"
+      @current-change="handleCurrentChange"
     >
       <!--region 选择框-->
-      <el-table-column v-if="options.mutiSelect" type="selection" style="width: 55px;" />
+      <el-table-column
+        v-if="options.singleSelect"
+        width="55"
+      >
+        <template slot-scope="scope">
+          <el-checkbox v-model="scope.row.checked" />
+        </template>
+      </el-table-column>
+      <el-table-column v-else-if="options.mutiSelect" type="selection" width="55" />
       <!--endregion-->
       <!--region 数据列-->
       <template v-for="(column, index) in columns">
@@ -34,7 +45,7 @@
                 <span v-html="column.formatter(scope.row, column,scope.$index)" />
               </template>
               <template v-else>
-                <span>{{ scope.row[column.prop] }}</span>
+                <span> {{ scope.row[column.prop] }}</span>
               </template>
             </template>
             <template v-else>
@@ -81,7 +92,7 @@
   </div>
 </template>
 <script>
-import tableHeightMixin from '@/mixins/tableHeight'
+// import tableHeightMixin from '@/mixins/tableHeight'
 export default {
     name: 'CTable',
     components: {
@@ -106,7 +117,7 @@ export default {
             }
         }
     },
-    mixins: [tableHeightMixin],
+    // mixins: [tableHeightMixin],
     props: {
         // 数据列表
         list: {
@@ -118,7 +129,7 @@ export default {
         },
         height: {
             type: String,
-            default: ''
+            default: null
         },
 
         columns: {
@@ -158,7 +169,9 @@ export default {
                 return {
                     stripe: true, // 是否为斑马纹 table
                     highlightCurrentRow: false, // 是否支持当前行高亮显示
-                    mutiSelect: false // 是否支持列表项选中功能
+                    // 单选和多选只能开启一个
+                    mutiSelect: false, // 是否支持列表项选中功能--多选
+                    singleSelect: false // 是否支持列表项选中功能--单选
                 }
             }
         }
@@ -168,7 +181,6 @@ export default {
     data() {
         return {
             dataList: this.list
-
         }
     },
     watch: {
@@ -182,13 +194,26 @@ export default {
         }
 
     },
-    mounted() {
+    created() {
 
     },
+    mounted() {
+    },
     methods: {
+
+        // 表格行单击点事件
+        rowClick(row, column, event) {
+            this.$refs.selectionTable.toggleRowSelection(row)
+        },
+
+        // 单行选中
+        handleCurrentChange(row) {
+            this.$emit('currentChange', row)
+        },
+
         // 多行选中
-        handleSelectionChange(val) {
-            this.$emit('selectionChange', val)
+        handleSelectionChange(row) {
+            this.$emit('selectionChange', row)
         },
         // 修改table tr行的背景色
         tableRowStyle({ row, rowIndex }) {}
@@ -196,15 +221,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-// .operate-group{
-//     display: flex;
-//     justify-items: center;
-//     align-content: center;
-//     .item{
-//         padding-left:5px ;
-
-//     }
-
-// }
-
+.tooltip-note{
+  display:-webkit-box;
+  text-overflow:ellipsis;
+  overflow:hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient:vertical;
+}
 </style>
